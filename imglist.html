@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>WeChat</title>
+
+    <!-- Bootstrap -->
+    <link href="./bootstrap-3.3.7-dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="./bootstrap-3.3.7-dist/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="./bootstrap-3.3.7-dist/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <link rel="stylesheet" href="./app.css">
+    <script src="./app.js"></script>
+    <style>
+        body {
+            margin-top: 50px;
+        }
+        .panel-body img{
+            width: 64px;
+            height: 64px;
+            padding: 3px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="jumbotron">
+        <div class="panel panel-default">
+            <div class="panel-heading">选择一张图片作为头像</div>
+            <div class="panel-body">
+                <?php
+                 $dir=opendir('./img');
+                 $imgs=[];
+                 while($filename=readdir($dir)){
+                    if($filename!='.'&&$filename!='..'){
+                    $imgs[]=$filename;
+                    }
+                 }
+                 foreach($imgs as $img){
+                 echo "<img src='./img/{$img}'>";
+                 }
+                 ?>
+            </div>
+
+        </div>
+
+        <p>
+            <!-- Button trigger modal -->
+
+        <form action="chatroom.php" id="confirm" method="post">
+        <input type="hidden" id="imgpath" name="imgpath">
+        <input type="submit" class="btn btn-primary btn-lg" value="确定 &raquo;">
+    </form>
+        </p>
+    </div>
+
+</div> <!-- /container -->
+
+<script>
+    window.onload=function(){
+        var confirm=document.getElementById('confirm');
+        var imgs = document.getElementsByTagName('img');
+        var selectimg=null;
+        for (var i = 0; i < imgs.length; i++) {
+            imgs[i].onclick = function () {
+                if(selectimg!=null){
+                    selectimg.style.border='';
+                }
+                this.style.border="2px gold solid";
+                confirm.imgpath.value=this.src;
+                selectimg=this;
+            }
+        }
+        confirm.onclick=function(){
+            if(confirm.imgpath.value==''){
+                alert("还没有选择图片");
+                return false;
+            }
+            return true;
+        }
+    }
+</script>
+
+
+
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="./bootstrap-3.3.7-dist/jquery/1.12.4/jquery.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="./bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+</body>
+</html>

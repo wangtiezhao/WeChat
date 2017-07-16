@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>WeChat</title>
+
+    <!-- Bootstrap -->
+    <link href="./bootstrap-3.3.7-dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="./bootstrap-3.3.7-dist/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="./bootstrap-3.3.7-dist/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <link rel="stylesheet" href="./app.css">
+    <script src="./app.js"></script>
+</head>
+<body>
+<script>
+//    var str='new test001 test002';
+//    var reg=new RegExp("test(\d+)");
+//    console.log(reg);
+//    console.log(str.match(reg));
+
+//    var reg = /(?:t|e|s|t)(\d+)/;
+//    console.log(reg);
+//    var str = 'new test001 test002';
+//    console.log(str.match(reg));
+//u123 / c789 / x222 /
+//把字符串
+//u123 / c789 / x41 / g42 / 中以 / 为分隔符的字符换行输出
+//    var str='u123/c789/x41/g42/';
+//var reg=/[a-z][^2\/]*[2]+[^2\/]*\/|\//g
+//   document.write(str.split(reg).join('<br>'));
+
+
+
+
+</script>
+    <div class="container" id="index.html">
+        <ul class="media-list" id="showbar" >
+
+
+
+            <!--ls-->
+            <!--<li class="media">-->
+                <!--<div class="media-body">-->
+                    <!--<div>-->
+                        <!--<span class="name">你是谁</span>-->
+                        <!--<span class="name">你是谁</span>-->
+                        <!--<span class="name">你是谁</span>-->
+                        <!--<span class="name">你4231421是谁</span>-->
+                        <!--<span class="name">你是谁</span>-->
+                        <!--<span class="name">你是4321432谁</span>-->
+                        <!--<span class="name">你是谁</span>-->
+                        <!--<span class="name">你4321423是4321421谁</span>-->
+                        <!--<span class="name">你是231432谁</span>-->
+                        <!--<span class="name">你是谁</span>-->
+                        <!--<span class="name">你是23412342谁</span>-->
+                        <!--<span class="name">你是2431423谁</span>-->
+                        <!--<span class="name">你3241是谁</span>-->
+                        <!--<span class="name">你是谁</span>-->
+                        <!--<span class="name">你3241321是谁</span>-->
+                        <!--<span class="name">你43214321是谁</span>-->
+                    <!--</div>-->
+
+
+                <!--</div>-->
+            <!--</li>-->
+            <!--endls-->
+
+
+        </ul>
+    </div>
+
+<div class="navbar-fixed-bottom container">
+    <div class="row">
+        <div class="input-group">
+            <!--<textarea class="form-control" rows="3" ></textarea>-->
+                <input type="text" class="form-control " id="msgbox">
+          <span class="input-group-btn">
+            <button class="btn btn-default btn-primary" type="button" id="send">&nbsp;&nbsp;&nbsp;发送&nbsp;&nbsp;&nbsp;</button>
+            <button  data-toggle="modal" data-target="#myModal" class="btn btn-default " id="clear">&nbsp;&nbsp;&nbsp;清屏&nbsp;&nbsp;&nbsp;</button>
+          </span>
+
+        </div><!-- /input-group -->
+    </div><!-- /.col-lg-6 -->
+</div>
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">清屏</h4>
+            </div>
+            <div class="modal-body">
+                清除当前窗口
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-danger " id="clearok" data-dismiss="modal">确定</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="./bootstrap-3.3.7-dist/jquery/1.12.4/jquery.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="./bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+</body>
+</html>

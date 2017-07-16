@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        #gamebox{
+            margin: 20px auto;
+            padding: 5px;
+            background-color: #ABABAB;
+            overflow: hidden;
+            width: 1000px;
+        }
+        #content{
+            float: left;
+        }
+        #info{
+            float: right;
+            width: 200px;
+            font-size:24px;
+            background-color: yellow;
+        }
+        #info span{
+            font-weight: 700;
+            padding: 5px;
+        }
+    </style>
+</head>
+<body>
+<div id="gamebox">
+    <div id="content"></div>
+    <div id="info">
+        当前速度:<span id="speed">800</span><br>
+        当前长度:<span id="length">0</span><br>
+        W<span>上</span><br>
+        S<span>下</span><br>
+        A<span>左</span><br>
+        D<span>右</span><br>
+        空格<span>开始游戏</span><br>
+        U<span>增加速度</span><br>
+        J<span>减少速度</span><br>
+        <span id="gameinfo">按空格开始游戏!</span>
+    </div>
+    <div style="clear: both"></div>
+</div>
+<script>
+    //显示类
+    function Map(){
+        this.width=30;
+        this.height=20;
+        this.updatelist=[];
+        this.divs=[];
+        for (var y = 0; y < this.height; y++) {
+            var row = [];
+            for (var x = 0; x < this.width; x++) {
+                row[x] = document.createElement('div');
+                row[x].style.width = "20px";
+                row[x].style.height = "20px";
+                row[x].style.border = "1px solid red";
+                row[x].style.margin = "2px";
+                row[x].style.display = "inline-block";
+                row[x].style.backgroundColor='white';
+                document.getElementById('content').appendChild(row[x]);
+            }
+            this.divs[y] = row;
+            var clear=document.createElement('div');
+            clear.style.clear="both";
+            document.getElementById('content').appendChild(clear);
+        }
+    }
+    //Snake类
+    function Snake(){
+        var _snake=this;
+        this.list=[];
+        this.speed=800;
+        this.dir = 'right';
+        this.next= 'right';
+        this.last=function(){
+            return _snake.list[_snake.list.length-1];
+        }
+        this.turn=function(dir){
+            switch (dir){
+                case 'right':
+                    if(_snake.dir!='left')
+                        _snake.next=dir;
+                    break;
+                case 'left':
+                    if(_snake.dir!='right')
+                        _snake.next = dir;
+                    break;
+                case 'up':
+                    if (_snake.dir != 'down')
+                        _snake.next = dir;
+                    break;
+                case 'down':
+                    if (_snake.dir != 'up')
+                        _snake.next = dir;
+                    break;
+            }
+        }
+    }
+    //data类
+    function Data(width,heihgt){
+        var _this=this;
+        this.data=[];
+        for(var i=0;i<heihgt;i++){
+            var row=[];
+            for(var j=0;j<width;j++){
+                row.push(0);
+            }
+            this.data.push(row);
+        }
+
+        this.set=function(y,x,type){
+            _this.data[y][x] = type;
+        }
+
+
+    }
+    //apple类
+    function Apple(){
+        this.x=0;
+        this.y=0;
+
+        var _this=this;
+        this.random=function(obj){
+            var nonelist=[];
+            for(var i=0; i< obj.data.length; i++){
+                for(var j=0; j< obj.data[i].length; j++){
+                    if(obj.data[i][j]==0){
+                        nonelist.push([i,j]);
+                    }
+                }
+            }
+            var length=nonelist.length;
+            if(length==0)return false;
+            var rd=Math.floor(Math.random() * length);
+            _this.x=nonelist[rd][1];
+            _this.y=nonelist[rd][0];
+        }
+    }
+
+    //主程序
+    function Game(){
+        var _this=this;
+        //载入地图模型
+        this.map=new Map();
+        //生成snake对象
+        this.snake=new Snake();
+        this.data=new Data(_this.map.width,_this.map.height);
+        this.apple=new Apple();
+        this.gametimer=0;
+        this.showtimer=0;
+        this.status=true;
+        this.isstart=false;
+        this.speedbox=document.getElementById('speed');
+        this.lengthbox=document.getElementById('length');
+        this.ganmeinfobox=document.getElementById('gameinfo');
+        this.add=function(y,x,type){
+            _this.map.updatelist.push([y,x]);
+            _this.data.set(y,x,type);
+        };
+        this.remove=function(y,x){
+            _this.map.updatelist.push([y, x]);
+            _this.data.set(y, x, 0);
+        };
+        //初始化
+        var midx=Math.floor(this.map.width/2);
+        var midy=Math.floor(this.map.height/2);
+        console.log(midx);
+        console.log(midy);
+        this.snake.list.push([midy,midx - 1]);
+        this.add(midy, midx - 1,1);
+        this.snake.list.push([midy, midx]);
+        this.add(midy, midx,1);
+        this.snake.list.push([midy,midx + 1]);
+        this.add(midy, midx + 1,1);
+        this.apple.random(this.data);
+        this.add(this.apple.y,this.apple.x,2);
+        this.validate=function (next,data){
+            if(next[0]<0||next[0]>=_this.map.height){
+                _this.gameover('上下撞墙死');
+            }
+            if(next[1]<0||next[1]>=_this.map.width){
+                _this.gameover('左右撞墙死');
+            }
+            if(data.data[next[0]][next[1]]==1){
+                _this.gameover('自残而死');
+            }
+            if(data.data[next[0]][next[1]]==2){
+                _this.add(next[0], next[1], 1);
+                _this.snake.list.push(next);
+                _this.apple.random(data);
+                this.add(_this.apple.y, _this.apple.x, 2);
+            }
+        };
+        this.gameover=function(message){
+            clearInterval(_this.gametimer);
+            clearInterval(_this.showtimer);
+            alert("Game Over \n死亡原因:"+message+"\n总长度为:"+_this.snake.list.length);
+            window.location.reload();
+        }
+        this.snakeMoveDir=function(){
+            switch (_this.snake.next){
+                case 'right':
+                    var next=[_this.snake.last()[0], _this.snake.last()[1] + 1];
+                        _this.validate(next,_this.data);
+                    _this.add(next[0],next[1],1);
+                    _this.snake.list.push(next);
+                    break;
+                case 'left':
+                    var next = [_this.snake.last()[0], _this.snake.last()[1] - 1];
+                    _this.validate(next, _this.data);
+                    _this.add(next[0], next[1], 1);
+                    _this.snake.list.push(next);
+                    break;
+                case 'up':
+                    var next = [_this.snake.last()[0]-1, _this.snake.last()[1] ];
+                    _this.validate(next, _this.data);
+                    _this.add(next[0], next[1], 1);
+                    _this.snake.list.push(next);
+                    break;
+                case 'down':
+                    var next = [_this.snake.last()[0]+1, _this.snake.last()[1]];
+                    _this.validate(next, _this.data);
+                    _this.add(next[0], next[1], 1);
+                    _this.snake.list.push(next);
+                    break;
+            }
+            _this.snake.dir=_this.snake.next;
+            var a=_this.snake.list.shift();
+            _this.remove(a[0],a[1]);
+        };
+        this.draw=function(){
+            //更新数据
+            _this.lengthbox.innerHTML=_this.snake.list.length;
+            _this.speedbox.innerHTML=_this.snake.speed;
+            if(_this.isstart==false){
+                _this.ganmeinfobox.innerHTML='按空格开始游戏';
+            }else if(_this.status){
+                _this.ganmeinfobox.innerHTML='游戏进行中..';
+            }else if(_this.status==false){
+                _this.ganmeinfobox.innerHTML='游戏暂停,按p开始游戏';
+            }else{
+                _this.ganmeinfobox.innerHTML='';
+            }
+
+
+
+            //有需要更新的内容则更新 并删除更新列表
+            var length= _this.map.updatelist.length;
+            if(length==0)return;
+            else{
+                var list=_this.map.updatelist.splice(0,length);
+                for (var i in list) {
+                    var y = list[i][0];
+                    var x = list[i][1];
+                    var color = _this.color(_this.data.data[y][x]);
+                    _this.map.divs[y][x].style.backgroundColor = color;
+                }
+            }
+
+
+        };
+        this.color=function(type){
+            switch (type){
+                case 0:return '#eee';
+                case 1:return 'green';
+                case 2:return 'red';
+            }
+        };
+        this.startMove=function(){
+            _this.snakeMoveDir();
+            _this.gametimer=setTimeout(_this.startMove,Math.floor(100000 / _this.snake.speed));
+        };
+        this.starDraw=function(){
+            _this.showtimer=setInterval(_this.draw,1);
+        };
+        this.keyFun=function(event){
+            switch (event.key.toLowerCase()){
+                case 'a':
+                    _this.snake.turn('left');
+                        if(_this.snake.dir=='left'){
+                            _this.snakeMoveDir();
+                        }
+                    break;
+                case 'd':
+                    _this.snake.turn('right');
+                    if (_this.snake.dir == 'right') {
+                        _this.snakeMoveDir();
+                    }
+                    break;
+                case 'w':
+                    _this.snake.turn('up');
+                    if (_this.snake.dir == 'up') {
+                        _this.snakeMoveDir();
+                    }
+                    break;
+                case 's':
+                    _this.snake.turn('down');
+                    if (_this.snake.dir == 'down') {
+                        _this.snakeMoveDir();
+                    }
+                    break;
+                case 'p':
+                    if(_this.isstart){
+                        if (_this.status == true) {
+                            clearInterval(_this.gametimer);
+                            clearInterval(_this.showtimer);
+                            _this.status = false;
+                        } else {
+                            _this.startMove();
+                            _this.starDraw();
+                            _this.status = true;
+                        }
+                    }
+                    break;
+                case 'r':
+                        window.location.reload();
+                    break;
+                case ' ':
+                    if(_this.isstart==false){
+                        _this.isstart=true;
+                        _this.startMove();
+                        _this.starDraw();
+                    }
+                    break;
+                case 'u':
+                    _this.snake.speed += 50;
+
+                    break;
+                case 'j':
+
+                    if (_this.snake.speed > 50) {
+                        _this.snake.speed -= 50;
+                    }
+
+            }
+        };
+        window.addEventListener('keypress',this.keyFun);
+    }
+    var game=new Game();
+
+</script>
+</body>
+</html>

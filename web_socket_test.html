@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+    var wsServer = 'ws://192.168.14.159:9502';
+    var websocket = new WebSocket(wsServer);
+    websocket.onopen = function (evt) {
+        document.write("Connected to WebSocket server. <br>");
+        websocket.send('1231412');
+    };
+
+    websocket.onclose = function (evt) {
+        document.write("Disconnected<br>");
+    };
+
+    websocket.onmessage = function (evt) {
+        document.write('Retrieved data from server: ' + evt.data +"<br>");
+    };
+
+    websocket.onerror = function (evt, e) {
+        document.write('Error occured: ' + evt.data+"<br>");
+    };
+</script>
+</body>
+</html>
