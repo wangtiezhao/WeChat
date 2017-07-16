@@ -18,30 +18,13 @@
     <![endif]-->
     <link rel="stylesheet" href="./app.css">
     <script src="./app.js"></script>
+    <script>
+        var nickname='<?php echo $_COOKIE['nickname'];?>';
+            var ip='<?php echo $_COOKIE['ip'];?>';
+    </script>
 </head>
 <body>
-<script>
-//    var str='new test001 test002';
-//    var reg=new RegExp("test(\d+)");
-//    console.log(reg);
-//    console.log(str.match(reg));
-
-//    var reg = /(?:t|e|s|t)(\d+)/;
-//    console.log(reg);
-//    var str = 'new test001 test002';
-//    console.log(str.match(reg));
-//u123 / c789 / x222 /
-//把字符串
-//u123 / c789 / x41 / g42 / 中以 / 为分隔符的字符换行输出
-//    var str='u123/c789/x41/g42/';
-//var reg=/[a-z][^2\/]*[2]+[^2\/]*\/|\//g
-//   document.write(str.split(reg).join('<br>'));
-
-
-
-
-</script>
-    <div class="container" id="index.html">
+    <div class="container"  id="container">
         <ul class="media-list" id="showbar" >
 
 
@@ -81,10 +64,10 @@
     <div class="row">
         <div class="input-group">
             <!--<textarea class="form-control" rows="3" ></textarea>-->
-                <input type="text" class="form-control " id="msgbox">
+                <input type="text" class="form-control input-lg" id="msgbox" >
           <span class="input-group-btn">
-            <button class="btn btn-default btn-primary" type="button" id="send">&nbsp;&nbsp;&nbsp;发送&nbsp;&nbsp;&nbsp;</button>
-            <button  data-toggle="modal" data-target="#myModal" class="btn btn-default " id="clear">&nbsp;&nbsp;&nbsp;清屏&nbsp;&nbsp;&nbsp;</button>
+            <button class="btn btn-default btn-primary btn-lg" type="button" id="send">&nbsp;&nbsp;&nbsp;发送&nbsp;&nbsp;&nbsp;</button>
+            <button  data-toggle="modal" data-target="#myModal" class="btn btn-default btn-lg" id="clear">&nbsp;&nbsp;&nbsp;清屏&nbsp;&nbsp;&nbsp;</button>
           </span>
 
         </div><!-- /input-group -->

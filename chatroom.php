@@ -8,14 +8,16 @@
  */
 
 
-    if (!isset($_COOKIE['nickname'])) {
+    if (isset($_COOKIE['nickname'])&& isset($_COOKIE['imgpath'])) {
+        include '__index.html';
+    }else if(!isset($_POST['imgpath'])){
         header('location:login.html');
         exit;
+    }else{
+        setcookie('imgpath', basename($_POST['imgpath']), time() + 3600 * 24, '/');
+        include '__index.html';
     }
-    if (!isset($_POST['imgpath'])|| $_POST['imgpath'] == '') {
-        header('location:imglist.php');
-        exit;
-    }
-    setcookie('imgpath', basename($_POST['imgpath']),  time() + 3600 * 24, '/');
 
-include '__index.html';
+
+
+
