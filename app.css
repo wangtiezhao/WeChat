@@ -40,6 +40,10 @@ img.media-object {
     /*display: none;*/
 }
 
+.media-body > div > span.ip {
+    font-size: 12px;
+}
+
 .media-body>div>span.name {
     /*display: none;*/
     font-weight: 700;

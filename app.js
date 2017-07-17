@@ -52,7 +52,7 @@
         function msghtml(detail){
             var time = new Date(detail.time*1000);
             var timeStr = time.toTimeString().split(' ')[0];
-            return '<li class="media"> <a class="pull-left" href="#"> <img class="media-object" src="./img/'+detail.img+'" alt="..."> </a> <div class="media-body"> <div><span class="name">'+detail.nickname+'</span><span class="time">'+timeStr+'</span> <hr> <span class="content">'+detail.content+'</span></div> </div> </li>';
+            return '<li class="media"> <a class="pull-left" href="#"> <img class="media-object" src="./img/'+detail.img+'" alt="..."> </a> <div class="media-body"> <div><span class="name">'+detail.nickname+'</span><span class="time">'+timeStr+'</span><span class="ip">' + detail.ip + '</span> <hr> <span class="content">'+detail.content+'</span></div> </div> </li>';
         }
         //自身消息
         function selfhtml(detail){
@@ -64,13 +64,13 @@
         function leavehtml(detail){
             var time = new Date(detail.time * 1000);
             var timeStr = time.toTimeString().split(' ')[0];
-            return '<li class="media"> <div class="media-body"> <div class="system-leave">系统消息:' + timeStr + ' ' + detail.nickname + ' 离线了</div> </div> </li>';
+            return '<li class="media"> <div class="media-body"> <div class="system-leave">系统消息:' + timeStr + ' ' + detail.nickname +' 在'+ detail.ip+  ' 离线了</div> </div> </li>';
         }
         //上线
         function onlinehtml(detail){
             var time = new Date(detail.time * 1000);
             var timeStr = time.toTimeString().split(' ')[0];
-             return '<li class="media"> <div class="media-body"> <div class="system-connect">系统消息:'+ timeStr+' '+detail.nickname+' 上线了</div> </div> </li>';
+             return '<li class="media"> <div class="media-body"> <div class="system-connect">系统消息:'+ timeStr+' '+detail.nickname + ' 在' + detail.ip +' 上线了</div> </div> </li>';
         }
         ws.onopen = function (evt) {
             add(successhtml('您已成功连接服务器.现在开始畅所欲言吧..'));
@@ -78,6 +78,7 @@
 
         ws.onmessage = function (evt) {
             var data = JSON.parse(evt.data);
+            console.log(data);
             switch (data.type){
                 case '上线':
                     if (data.detail['nickname'] == nickname && data.detail['ip'] == ip) {
@@ -99,7 +100,6 @@
 
                     break;
                 case '普通消息':
-                    console.log(data.detail);
                     if(data.detail['nickname']==nickname&&data.detail['ip']==ip){
                         add(selfhtml(data.detail));
                     }else{
