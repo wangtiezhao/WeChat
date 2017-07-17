@@ -1,4 +1,4 @@
-# WeChat
+<h3># WeChat</h3>
 基于swoole/bootstrap开发的在线聊天室
 
 版本历程:
