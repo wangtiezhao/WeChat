@@ -1,4 +1,3 @@
-<html lang="en">
 <head>
     <meta charset="UTF-8">
 </head>
@@ -37,7 +36,6 @@
 
 如有问题请联系作者 tiezhaowang@yahoo.com
 </body>
-</html>
 
 
 
